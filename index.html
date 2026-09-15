@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NutriPoint — Edukasi & Pemantauan Gizi Seimbang</title>
+<meta name="description" content="NutriPoint: aplikasi edukasi dan pemantauan gizi seimbang berbasis gamifikasi untuk siswa SMP.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Lewati ke konten</a>
+
+<!-- ======================= HEADER ======================= -->
+<header class="topbar">
+  <div class="topbar__inner">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">🥗</span>
+      <span class="brand__name">NutriPoint</span>
+    </div>
+
+    <nav class="nav-desktop" aria-label="Menu utama">
+      <button class="nav-btn is-active" data-nav="dashboard">Dashboard</button>
+      <button class="nav-btn" data-nav="makanan">Makanan</button>
+      <button class="nav-btn" data-nav="progress">Progress</button>
+      <button class="nav-btn" data-nav="tantangan">Tantangan</button>
+      <button class="nav-btn" data-nav="belajar">Belajar</button>
+      <button class="nav-btn" data-nav="profil">Profil</button>
+    </nav>
+
+    <button class="profile-chip" data-nav="profil" aria-label="Buka profil">
+      <span class="profile-chip__avatar" data-bind="avatar">🧑‍🎓</span>
+      <span class="profile-chip__meta">
+        <strong data-bind="name">Vedanta</strong>
+        <small data-bind="class">Kelas 8B</small>
+      </span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ======================= DASHBOARD ======================= -->
+  <section class="page is-active" id="page-dashboard" aria-labelledby="dashTitle">
+    <div class="hero">
+      <div class="hero__text">
+        <h1 class="hero__greet" id="dashTitle">Halo, <span data-bind="name">Vedanta</span>! 👋</h1>
+        <p class="hero__sub">Sudah siap mencatat makananmu hari ini?</p>
+        <p class="hero__date" id="heroDate"></p>
+      </div>
+
+      <div class="pointcard">
+        <span class="pointcard__label">NutriPoint</span>
+        <p class="pointcard__value"><span id="pointValue">0</span> <small>Points</small></p>
+        <p class="pointcard__streak">🔥 <span id="streakValue">0</span> Day Streak</p>
+        <div class="pointcard__badges" id="heroBadges"></div>
+      </div>
+    </div>
+
+    <button class="btn-add" data-action="open-add">
+      <span class="btn-add__plus" aria-hidden="true">＋</span>
+      <span>
+        <strong>Tambah Makanan</strong>
+        <small>Isi manual atau foto label kemasan</small>
+      </span>
+    </button>
+
+    <section class="card">
+      <div class="card__head">
+        <h2>Progress gizi hari ini</h2>
+        <span class="pill" id="progressPill">—</span>
+      </div>
+      <div class="nutri-grid" id="nutrientGrid"></div>
+      <p class="note">Perkiraan pemenuhan berdasarkan AKG, bukan target medis individu. Angka pada prototype ini adalah contoh.</p>
+    </section>
+
+    <section class="card">
+      <div class="card__head">
+        <h2>Makanan Hari Ini</h2>
+        <span class="pill" id="todayCountPill">0 catatan</span>
+      </div>
+      <ul class="entry-list" data-today-list></ul>
+    </section>
+  </section>
+
+  <!-- ======================= MAKANAN ======================= -->
+  <section class="page" id="page-makanan" aria-labelledby="foodTitle">
+    <div class="page__head">
+      <h1 id="foodTitle">Makanan</h1>
+      <p>Dua cara mencatat: tulis sendiri, atau foto tabel Nutrition Facts di kemasan.</p>
+    </div>
+
+    <div class="option-grid">
+      <button class="option-card" data-action="open-manual">
+        <span class="option-card__icon" aria-hidden="true">✍️</span>
+        <span class="option-card__title">Input manual</span>
+        <span class="option-card__desc">Untuk nasi, sate, tipat, lawar, makanan rumah, dan menu kantin.</span>
+        <span class="option-card__cta">Mulai isi</span>
+      </button>
+
+      <button class="option-card option-card--accent" data-action="open-photo">
+        <span class="option-card__icon" aria-hidden="true">📸</span>
+        <span class="option-card__title">Foto label kemasan</span>
+        <span class="option-card__desc">Untuk snack, susu, dan minuman kemasan yang punya tabel Nutrition Facts.</span>
+        <span class="option-card__cta">Ambil foto label</span>
+      </button>
+    </div>
+
+    <section class="card">
+      <div class="card__head">
+        <h2>Ambil dari daftar makanan</h2>
+        <span class="pill" id="foodDbCount">—</span>
+      </div>
+      <p class="card__lead">Sekali klik untuk membuka form yang sudah terisi. Nilainya masih bisa kamu ubah.</p>
+      <div class="food-db" id="foodDbList"></div>
+      <p class="note" id="dataDisclaimer"></p>
+    </section>
+
+    <section class="card">
+      <div class="card__head">
+        <h2>Makanan Hari Ini</h2>
+        <span class="pill" id="todayCountPill2">0 catatan</span>
+      </div>
+      <ul class="entry-list" data-today-list></ul>
+    </section>
+  </section>
+
+  <!-- ======================= PROGRESS ======================= -->
+  <section class="page" id="page-progress" aria-labelledby="progTitle">
+    <div class="page__head">
+      <h1 id="progTitle">Progress</h1>
+      <p>Lihat pola makanmu dari hari ke hari, bukan untuk dikejar sempurna.</p>
+    </div>
+
+    <section class="card">
+      <div class="card__head card__head--wrap">
+        <h2>Grafik pemenuhan</h2>
+        <div class="seg" role="group" aria-label="Rentang waktu">
+          <button class="seg__btn is-active" data-range="7">7 Days</button>
+          <button class="seg__btn" data-range="30">30 Days</button>
+        </div>
+      </div>
+
+      <div class="tabs" id="nutrientTabs" role="tablist" aria-label="Pilih zat gizi"></div>
+
+      <div class="chart-wrap">
+        <canvas id="progressChart" aria-label="Grafik progress gizi" role="img"></canvas>
+      </div>
+
+      <div class="chart-legend">
+        <span><i class="dot dot--green"></i> Asupan tercatat</span>
+        <span><i class="dot dot--yellow"></i> Acuan AKG</span>
+      </div>
+
+      <div class="stat-row" id="progressStats"></div>
+      <p class="note" id="chartNote"></p>
+    </section>
+
+    <section class="card">
+      <div class="card__head"><h2>Ringkasan hari ini</h2></div>
+      <div class="nutri-grid nutri-grid--compact" id="nutrientGridProgress"></div>
+    </section>
+  </section>
+
+  <!-- ======================= TANTANGAN ======================= -->
+  <section class="page" id="page-tantangan" aria-labelledby="chalTitle">
+    <div class="page__head">
+      <h1 id="chalTitle">Weekly Challenge</h1>
+      <p>Semua tantangan di sini soal kebiasaan dan pengetahuan — bukan soal makan sesedikit mungkin.</p>
+    </div>
+
+    <div class="challenge-grid" id="challengeList"></div>
+
+    <section class="card">
+      <div class="card__head">
+        <h2>Papan aktivitas kelas</h2>
+        <span class="pill pill--soft">Berdasarkan aktivitas</span>
+      </div>
+      <p class="card__lead">Peringkat dihitung dari materi yang diselesaikan, hari mencatat dalam 7 hari terakhir, dan challenge yang tuntas. Tidak ada peringkat berdasarkan berat badan, jumlah kalori, atau kedekatan dengan angka AKG.</p>
+      <ol class="leaderboard" id="leaderboard"></ol>
+      <p class="note">Nama teman pada papan ini adalah data contoh untuk prototype.</p>
+    </section>
+  </section>
+
+  <!-- ======================= BELAJAR ======================= -->
+  <section class="page" id="page-belajar" aria-labelledby="learnTitle">
+    <div class="page__head">
+      <h1 id="learnTitle">Learn — Belajar Gizi</h1>
+      <p>Lima materi singkat. Setiap materi yang selesai menambah 5 NutriPoint.</p>
+    </div>
+
+    <section class="card card--learnbar">
+      <div class="learnbar">
+        <div class="learnbar__text">
+          <strong id="learnProgressText">0 / 5 materi selesai</strong>
+          <small>Baca sampai bawah, lalu tandai selesai.</small>
+        </div>
+        <div class="progress progress--lg">
+          <div class="progress__bar" id="learnProgressBar" style="width:0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="learn-grid" id="learnList"></div>
+  </section>
+
+  <!-- ======================= PROFIL ======================= -->
+  <section class="page" id="page-profil" aria-labelledby="profTitle">
+    <div class="page__head">
+      <h1 id="profTitle">Profil</h1>
+      <p>Identitas pengguna, koleksi badge, dan pengaturan data prototype.</p>
+    </div>
+
+    <section class="card profile-card">
+      <div class="profile-card__top">
+        <button class="avatar-big" id="avatarButton" aria-label="Ganti avatar">🧑‍🎓</button>
+        <div class="profile-card__id">
+          <label class="field field--inline">
+            <span>Nama</span>
+            <input type="text" id="profileName" maxlength="24" autocomplete="off">
+          </label>
+          <label class="field field--inline">
+            <span>Kelas</span>
+            <input type="text" id="profileClass" maxlength="24" autocomplete="off">
+          </label>
+          <p class="profile-card__school" data-bind="school"></p>
+        </div>
+      </div>
+      <div class="stat-row" id="profileStats"></div>
+    </section>
+
+    <section class="card">
+      <div class="card__head">
+        <h2>Badge</h2>
+        <span class="pill" id="badgeCount">—</span>
+      </div>
+      <div class="badge-grid" id="badgeList"></div>
+    </section>
+
+    <section class="card">
+      <div class="card__head"><h2>Alat demo & data</h2></div>
+      <p class="card__lead">Tombol berikut memudahkan saat presentasi: streak bisa ditunjukkan bertambah tanpa menunggu hari berikutnya.</p>
+      <div class="tool-row">
+        <button class="btn btn--ghost" data-action="sim-streak">🔥 Simulasi +1 hari mencatat</button>
+        <button class="btn btn--ghost" data-action="reset-seed">↺ Kembalikan data contoh</button>
+        <button class="btn btn--ghost btn--danger" data-action="clear-all">🗑️ Mulai dari kosong</button>
+      </div>
+      <p class="note" id="storageNote"></p>
+    </section>
+
+    <section class="card card--about">
+      <div class="card__head"><h2>Tentang NutriPoint</h2></div>
+      <p class="card__lead" id="aboutSubtitle"></p>
+      <ul class="about-list">
+        <li>NutriPoint adalah aplikasi <strong>edukasi dan pemantauan gizi</strong>, bukan aplikasi diet. Tidak ada target penurunan berat badan, pembatasan kalori, atau perbandingan tubuh.</li>
+        <li>Angka AKG dipakai sebagai <strong>perkiraan pemenuhan</strong> untuk belajar, bukan target medis perorangan.</li>
+        <li>Nilai gizi pada prototype ini adalah <strong>data contoh</strong> dan harus divalidasi dengan sumber gizi resmi sebelum dipakai dalam penelitian.</li>
+        <li>Pembacaan label kemasan masih <strong>disimulasikan</strong>: sistem membaca informasi yang tercetak pada label, dan hasilnya selalu dikonfirmasi pengguna.</li>
+      </ul>
+    </section>
+  </section>
+
+</main>
+
+<!-- ======================= TOMBOL MENGAMBANG (MOBILE) ======================= -->
+<button class="fab" data-action="open-add" aria-label="Tambah makanan">＋</button>
+
+<!-- ======================= NAVIGASI BAWAH (MOBILE) ======================= -->
+<nav class="nav-mobile" aria-label="Menu utama mobile">
+  <button class="nav-mobile__btn is-active" data-nav="dashboard"><span aria-hidden="true">🏠</span>Home</button>
+  <button class="nav-mobile__btn" data-nav="makanan"><span aria-hidden="true">🍽️</span>Makanan</button>
+  <button class="nav-mobile__btn" data-nav="progress"><span aria-hidden="true">📈</span>Progress</button>
+  <button class="nav-mobile__btn" data-nav="tantangan"><span aria-hidden="true">🎯</span>Tantangan</button>
+  <button class="nav-mobile__btn" data-nav="belajar"><span aria-hidden="true">📚</span>Belajar</button>
+  <button class="nav-mobile__btn" data-nav="profil"><span aria-hidden="true">🧑‍🎓</span>Profil</button>
+</nav>
+
+<!-- ======================= MODAL ======================= -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__backdrop" data-action="close-modal"></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modalPanel"></div>
+</div>
+
+<!-- ======================= TOAST ======================= -->
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<!-- Chart.js (opsional; kalau gagal dimuat, grafik memakai canvas bawaan) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<!-- Modul aplikasi, dimuat berurutan dari yang paling dasar -->
+<script src="js/data.js"></script>
+<script src="js/nutrition.js"></script>
+<script src="js/gamification.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ocr.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
